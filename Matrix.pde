@@ -1,6 +1,7 @@
 class Matrix {
   int numRows, numCols;
   float[][] matrix;
+  float lerpVal = 0;
   Matrix(int rows, int cols) {
     numRows = rows; numCols = cols;
     
@@ -34,7 +35,7 @@ class Matrix {
   }
   
   void set(float[][] input) {
-        if (numRows != input.length || numCols != input[0].length) {
+    if (numRows != input.length || numCols != input[0].length) {
       println("Matrix::set() => Dimensions Incompatable!");
       return;
     }
@@ -55,7 +56,7 @@ class Matrix {
     Matrix output = new Matrix(numRows, numCols);
     for (int r = 0; r < numRows; r++) {
       for (int c = 0; c < numCols; c++) {
-        output.matrix[r][c] = matrix[r][c] + input.matrix[r][c];
+        output.matrix[r][c] = lerp(0, matrix[r][c], lerpVal) + input.matrix[r][c];
       }
     }
     return output;
@@ -72,7 +73,7 @@ class Matrix {
       for (int row = 0; row < numRows; row++) { 
         float sum = 0;
         for (int col = 0; col < numCols; col++) {
-          sum += matrix[row][col] * input.matrix[col][input_col];
+          sum += lerp((row == col ? 1 : 0), matrix[row][col], lerpVal) * input.matrix[col][input_col];
         }
         output.matrix[row][input_col] = sum;
       }
@@ -83,9 +84,14 @@ class Matrix {
   void applySigmoid() {
     for (int row = 0; row < numRows; row++) { 
       for (int col = 0; col < numCols; col++) {
+        // matrix[row][col] = lerp(matrix[row][col], sigmoid(matrix[row][col]), lerpVal);
         matrix[row][col] = sigmoid(matrix[row][col]);
       }
     }
+  }
+  
+  void incrementLerp(float sec) { // display time
+    lerpVal += 1.0/(60*sec);
   }
 }
 

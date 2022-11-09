@@ -17,4 +17,10 @@ class NeuralNetwork {
     }
     return result;
   }
+  
+  void incrementLerp(float sec) {
+    for (int layer = 0; layer < Layers.length; layer++) {
+      Layers[layer].incrementLerp(sec);
+    }
+  }
 }

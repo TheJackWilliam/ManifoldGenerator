@@ -13,9 +13,14 @@ class Layer {
     Matrix output = new Matrix(numNodes, 1);
     
     output.set(weights.mult(input));
-    output.set(output.add(biases));
+    output.set(biases.add(output));
     output.applySigmoid();
     
     return output; 
+  }
+  
+  void incrementLerp(float sec) {
+    weights.incrementLerp(sec);
+    biases.incrementLerp(sec);
   }
 }
